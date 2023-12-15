@@ -9,7 +9,3 @@ export class User {
   @Column()
   name: string;
 }
-export class UserAdd {
-  @Column()
-  name: string;
-}

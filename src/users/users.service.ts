@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository} from 'typeorm';
 import { User } from './users.entity';
-import { UserAdd } from './users.entity';
+import { CreateUserDto } from './dto/users.dto';
 
 @Injectable()
 export class UserService {
@@ -15,7 +15,7 @@ export class UserService {
   getUsers(): Promise<User[]> {
     return this.userRepository.find();
   }
-  createUser(createUser: UserAdd): Promise<UserAdd> {
+  createUser(createUser: CreateUserDto): Promise<User> {
     const user = this.userRepository.create(createUser);
     return this.userRepository.save(user);
   }

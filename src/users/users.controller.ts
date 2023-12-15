@@ -3,7 +3,8 @@ import { Controller, Delete, Get, NotFoundException, Param, Patch } from '@nestj
 import { Post } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { UserService } from './users.service';
-import { User, UserAdd } from './users.entity';
+import { User } from './users.entity';
+import { CreateUserDto } from './dto/users.dto';
 
 
 @Controller('users')
@@ -15,7 +16,7 @@ export class UserController {
     return this.userService.getUsers();
   }
   @Post()
-  createUser(@Body() createUser: UserAdd): Promise<UserAdd> {
+  createUser(@Body() createUser: CreateUserDto): Promise<User> {
     return this.userService.createUser(createUser);
   }
   @Patch(':id')
