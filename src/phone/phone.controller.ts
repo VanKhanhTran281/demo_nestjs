@@ -15,6 +15,15 @@ export class PhoneController {
     getPhone(): Promise<Phone[]> {
         return this.phoneService.getPhone();
     }
+    @Get(':phone_id')
+    async getUserWithPhones(@Param('phone_id') id: number): Promise<Phone> {
+        try {
+            const user = await this.phoneService.getUserWithPhones(id);
+            return user;
+        } catch (error) {
+            throw new NotFoundException('User not found');
+        }
+    }
     @Post()
     createPhone(@Body() createPhone: PhoneAdd): Promise<Phone> {
         try {

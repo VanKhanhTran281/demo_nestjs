@@ -16,7 +16,7 @@ export class Phone {
   @Column()
   user_id: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, user => user.phone)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

@@ -15,6 +15,15 @@ export class UserController {
   getUsers(): Promise<User[]> {
     return this.userService.getUsers();
   }
+  @Get(':id')
+  async getUserWithPhones(@Param('id') id: number): Promise<User> {
+    try {
+      const user = await this.userService.getUserWithPhones(id);
+      return user;
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
+  }
   @Post()
   createUser(@Body() createUser: CreateUserDto): Promise<User> {
     return this.userService.createUser(createUser);

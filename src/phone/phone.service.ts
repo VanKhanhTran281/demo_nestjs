@@ -10,10 +10,22 @@ export class PhoneService {
   constructor(
     @InjectRepository(Phone)
     private readonly phoneRepository: Repository<Phone>,
-  ) {}
+  ) { }
 
   getPhone(): Promise<Phone[]> {
     return this.phoneRepository.find();
+  }
+  async getUserWithPhones(phone_id: number): Promise<Phone> {
+    const user = await this.phoneRepository.findOne(
+      {
+        where: { phone_id },
+        relations: ['user'],
+      }
+    );
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
   createPhone(createPhone: PhoneAdd): Promise<Phone> {
     const phone = this.phoneRepository.create(createPhone);
@@ -28,7 +40,7 @@ export class PhoneService {
     await this.phoneRepository.save(phone);
     return phone;
   }
-  
+
   async deletePhone(phone_id: number): Promise<void> {
     const result = await this.phoneRepository.delete(phone_id);
     if (result.affected === 0) {

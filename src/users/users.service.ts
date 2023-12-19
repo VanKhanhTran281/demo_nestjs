@@ -15,6 +15,18 @@ export class UserService {
   getUsers(): Promise<User[]> {
     return this.userRepository.find();
   }
+  async getUserWithPhones(id: number): Promise<User> {
+    const user = await this.userRepository.findOne(
+      { 
+        where: { id },
+        relations: ['phone'],
+      }
+    );
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
   createUser(createUser: CreateUserDto): Promise<User> {
     const user = this.userRepository.create(createUser);
     return this.userRepository.save(user);
