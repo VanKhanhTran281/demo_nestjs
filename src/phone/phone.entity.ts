@@ -21,16 +21,16 @@ export class Phone {
   user: User;
 }
 
-export class PhoneAdd {
-  @Column()
-  company: string;
+// export class PhoneAdd {
+//   @Column()
+//   company: string;
 
-  @Column()
-  value: string;
+//   @Column()
+//   value: string;
 
-  @Column()
-  user_id: number;
+//   @Column()
+//   user_id: number;
   
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-}
+//   @JoinColumn({ name: 'user_id' })
+//   user: User;
+// }

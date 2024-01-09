@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-export class CreateUserDto {
+export class SignInDto {
     name: string;
-    password: string
+    password: string;
 }

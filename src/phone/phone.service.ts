@@ -2,7 +2,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Phone, PhoneAdd } from './phone.entity';
+import { Phone} from './phone.entity';
+import { CreatePhoneDto } from './dto/phone.dto';
 
 
 @Injectable()
@@ -12,22 +13,30 @@ export class PhoneService {
     private readonly phoneRepository: Repository<Phone>,
   ) { }
 
-  getPhone(): Promise<Phone[]> {
-    return this.phoneRepository.find();
+  async getPhone(page: number, pageSize: number): Promise<{ phone: Phone[], totalPage: number, currentPage: number }> {
+    const [phone, total] = await this.phoneRepository.findAndCount({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    const totalPage = Math.ceil(total / pageSize);
+    const currentPage = page;
+
+    return { phone, totalPage, currentPage };
   }
   async getUserWithPhones(phone_id: number): Promise<Phone> {
-    const user = await this.phoneRepository.findOne(
+    const phone = await this.phoneRepository.findOne(
       {
         where: { phone_id },
         relations: ['user'],
       }
     );
-    if (!user) {
+    if (!phone) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return phone;
   }
-  createPhone(createPhone: PhoneAdd): Promise<Phone> {
+  createPhone(createPhone: CreatePhoneDto): Promise<Phone> {
     const phone = this.phoneRepository.create(createPhone);
     return this.phoneRepository.save(phone);
   }
